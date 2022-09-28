@@ -11,7 +11,7 @@ class Engine:
         for i in range(len(self.objects)):
             for j in range(len(self.objects)):
                 if i - j and self.objects[i].mass:
-                    inter_func(self.objects[i], self.objects[j])
+                    self.objects[i] = inter_func(self.objects[i], self.objects[j])
 
     def __iadd__(self, other):
         self.objects.append(other)
@@ -22,9 +22,9 @@ class Engine:
         return self
 
     def __getitem__(self, item):
-        if item is int:
+        if type(item) is int:
             return self.objects[item]
-        elif item is str:
+        elif type(item) is str:
             for i in self.objects:
                 if i.name == item:
                     return i
@@ -52,7 +52,14 @@ class MassObject:
         self.pos += self.speed * self.time
 
 
-e = Engine(1000)
-e += MassObject("camera", 0, 0, array([0, 0, 0]), array([0, 0, 0]))
+def main():
+    time_per_tick = 10000
+    e = Engine(1000)
+    e += MassObject("camera", 0, 0, array([0.001, 0.02, -0.3]), array([0., 0., 0.]), t=time_per_tick)
+    for i in range(1000):
+        e["camera"].update()
+        print(e["camera"].pos)
 
-print(e["camera"])
+
+if __name__ == "__main__":
+    main()
