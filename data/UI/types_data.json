@@ -1,0 +1,13 @@
+{
+  "groups": ["Interface_sprites"],
+  "types": {
+    "button": {
+      "img": ["data/UI/button/standard_img.png", "data/UI/button/standard_img.png"],
+      "size": [20, 20],
+      "groups": ["Interface_sprites"]
+    }
+  },
+  "placements": [
+    {"name": "kind_of_object", "pos": [10, 10], "type": "button"}
+  ]
+}
