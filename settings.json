@@ -1,4 +1,8 @@
 {
+  "size": [400, 400],
+  "title": "Stellar Emulator",
+  "scale": [1, 1],
   "fps": 24,
-  "standard_color": "0B0B0B"
+  "standard_color": "0B0B0B",
+  "plane_scale": 0.0000001
 }
