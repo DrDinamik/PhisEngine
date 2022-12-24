@@ -1,5 +1,5 @@
 {
-  "groups": ["Interface_sprites"],
+  "groups": ["Interface_sprites", "celestial_body"],
   "types": {
     "button": {
       "img": ["data/UI/button/standard_img.png", "data/UI/button/standard_img.png"],
@@ -8,6 +8,9 @@
     }
   },
   "placements": [
-    {"name": "kind_of_object", "pos": [10, 10], "type": "button"}
+    {"name": "earth", "pos": [0, 0], "type": "button", "groups": ["celestial_body"]},
+    {"name": "sun", "pos": [0, 0], "type": "button", "groups": ["celestial_body"]},
+    {"name": "venus", "pos": [0, 0], "type": "button", "groups": ["celestial_body"]},
+    {"name": "mercury", "pos": [0, 0], "type": "button", "groups": ["celestial_body"]}
   ]
 }
