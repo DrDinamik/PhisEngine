@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from pygame import display, RESIZABLE, init, event
 from time import perf_counter
 from data.ui_objects import *
