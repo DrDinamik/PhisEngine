@@ -27,7 +27,6 @@ Then add new line in data/UI/types_data.json by example:
 ````json
 {
   ...
-  },
   "placements": [
     {"name": "object_name", "pos": [0, 0], "type": "button", "groups": ["celestial_body"]}
   ]
