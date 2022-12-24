@@ -32,7 +32,7 @@ Then add new line in data/UI/types_data.json by example:
   ]
 }
 ````
-- **"name"** - place there name of new object, exactly like in prevus file
+- **"name"** - place there name of new object, exactly like in previous file
 - **"pos"** - pos of new object on screen ("[0, 0]" only)
 - **"type"** - type of smaple ("button" only)
 - **"groups"** - group ("["celestial_body"]" only)
