@@ -1,10 +1,12 @@
 from pygame import image, transform, sprite
 from numpy import array, pi, zeros, int16
+from data.file_manager import get_resources
 
 
 class Animation:
     """Class for procedural animations(WIP)"""
-    def __init__(self, f, z, r, x0: array, xd: array, step=0.1):
+    def __init__(self, f, z, r, x0: array, x: array, step=0.1):
+
         self.f, self.z, self.r = f, z, r
         # Compute constants
         self.k1 = self.z / (pi * self.f)
@@ -14,10 +16,12 @@ class Animation:
         self.x_prev = x0
         self.y = x0
         self.yd = 0
-        self.xd = xd
+        self.xd = 0
+        self.xe = x
+        self.diff = abs(self.xe - x0) * step
 
         self.step = step
-        self.t = 0
+        self.t = step
         print("init")
 
     def update(self, x: array):
@@ -26,14 +30,16 @@ class Animation:
         :param x: actual pos
         :return: next pos and end statement
         """
-        if sum([i ** 2 for i in self.xd - x]) ** 0.5 <= 0.1:
+        if sum([i ** 2 for i in self.xe - x]) ** 0.5 <= self.diff:
             print("exit")
-            return tuple(self.y), True
-        k2_stable = max(self.k2, 1.1 * (self.t ** 2 / 4 + self.t * self.k1 / 2))  # Guarantee stability
+            return self.y, True
+        self.xd = x * self.step
+        k2_stable = max(self.k2, self.t ** 2 / 2 + self.t * self.k1 / 2, self.t * self.k1)  # Guarantee stability
         self.y = self.y + self.t * self.yd  # Integrate pos by velocity
         self.yd = self.yd + self.t * (x + self.k3 * self.xd - self.y - self.k1 * self.yd) / k2_stable  # Integrate pos by acceleration
         self.t += self.step
-        # print(self.y, self.yd, self.t, x, self.xd)
+        print(self.y, self.xd, x - self.x_prev)
+        self.x_prev = x
         return tuple(self.y), None
 
 
@@ -44,12 +50,18 @@ class HiddenGroup(sprite.Group):
 
 
 class Button(sprite.Sprite):
-    def __init__(self, pos: array, name, construction_data, data, groups: dict, switch=False):
+    i = 0
+    def __init__(self, pos: array, name, construction_data, data, groups: dict, switch=False, images=[]):
         super().__init__(i[1] for i in filter(lambda x: x[0] in construction_data["groups"], groups.items()))
+
+        self.id = Button.i
+        Button.i += 1
 
         self.pos = pos
         self.c_data = construction_data
         self.name = name
+        self.images = images
+        self.prev_img = len(self.images)
         self.data = data
 
         self.switch = switch
@@ -70,7 +82,8 @@ class Button(sprite.Sprite):
         self.move(self.pos)
 
     def switch_img(self):
-        self.image = image.load(self.c_data["img"][int(self.pressed)]).convert_alpha()
+        self.image = image.load(get_resources(self.images[self.prev_img % len(self.images)] if self.images else
+                                              self.c_data["img"][int(self.pressed)])).convert_alpha()
         self.resize()
 
     def touch(self):

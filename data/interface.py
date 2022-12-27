@@ -33,7 +33,8 @@ class InterfaceHandler:
                                                     construction_data=cd,
                                                     data=self.data,
                                                     groups=self.groups,
-                                                    switch=item["switch"] if item.get("switch") else False)
+                                                    switch=item["switch"] if item.get("switch") else False,
+                                                    images=item["images"] if item.get("images") else [])
 
     def to_plane(self, pos: array):
         return pos * self.data.settings["plane_scale"] + self.center + array(list(array(self.data.size) / 2) + [0])
@@ -45,7 +46,7 @@ class InterfaceHandler:
             self.screen = display.set_mode(self.data.size, RESIZABLE)
             # print([item.pos for item in self.eng.objects])
 
-            self.screen.fill((255, 255, 255))
+            self.screen.fill((43, 43, 43))
 
             for obj in self.eng.objects:
                 for name, spr in self.sprites.items():

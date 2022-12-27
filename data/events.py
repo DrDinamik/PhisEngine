@@ -10,8 +10,8 @@ class Events:
 
     def anim_upd(self):
         for i in range(len(self.scale_queue)):
-            self.data.dyn_scale, res = self.scale_queue[i].update(self.data.dyn_scale)
-            print(self.data.dyn_scale)
+            self.data.dyn_scale, res = self.scale_queue[i].update(array([self.data.dyn_scale]))
+            self.data.dyn_scale = self.data.dyn_scale[0]
             if res:
                 self.scale_queue.pop(i)
 
@@ -22,9 +22,9 @@ class Events:
                 self.data.running = False
             elif event.type == KEYDOWN:
                 if event.key == K_PLUS:
-                    self.scale_queue += [Animation(4.5, 0.3, 0, array(self.data.scale), array(self.data.scale) * 1.2)]
+                    self.scale_queue += [Animation(4.5, 0.3, 0, array([self.data.dyn_scale]), array([self.data.dyn_scale]) * 1.2)]
                 elif event.key == K_MINUS:
-                    self.scale_queue += [Animation(4.5, 0.3, 0, array(self.data.scale), array(self.data.scale) / 1.2)]
+                    self.scale_queue += [Animation(4.5, 0.3, 0, array([self.data.dyn_scale]), array([self.data.dyn_scale]) / 1.2)]
             elif event.type == MOUSEBUTTONUP:
                 if event.button == 1:
                     print("press")
@@ -41,7 +41,6 @@ class Events:
                 # print(self.data.scale)
             elif event.type == VIDEORESIZE:
                 self.data.size = event.size
-
 
 
 # import pygame.examples.eventlist

@@ -1,20 +1,11 @@
-from numpy import array, float64, isnan, nan_to_num, hstack, ones, zeros, mean, hstack
-
-
-def modulus(n: array):
-    # print("Modulus:", n, array([i ** 2 for i in n]) ** 0.5 / 0)
-    return sum(list(array([i ** 2 for i in n]))) ** 0.5
-
-
-def distance(obj1, obj2):
-    """Calculate the distance between two objects"""
-    return ((obj1.pos - obj2.pos) ** 2).sum() ** 0.5
+from numpy import array, ones, zeros, mean, hstack
 
 
 class Engine:
     def __init__(self, data):
         self.data = data
         self.objects = self.load_objects()
+        self.time_pass = 0
 
         self.G = 6.67408e-11  # Gravitational constant
         self.softening = 0.1  # precision metric
@@ -37,6 +28,15 @@ class Engine:
         return [MassObject(name, item["radius"], item["mass"], array(item["velocity"]), array(item["pos"]), self.data.simulation_time)
                 for name, item in self.data.objects.items()]
 
+    def dist_chek(self):
+        # print(self.objects[2].name, self.objects[3].name, sum([n ** 2 for n in (self.objects[2].pos - self.objects[3].pos)]) ** 0.5)
+        for i in range(len(self.objects) - 1):
+            for j in range(i + 1, len(self.objects)):
+                if sum([n ** 2 for n in (self.objects[j].pos - self.objects[i].pos)]) ** 0.5 < (self.objects[i].radius + self.objects[j].radius) and self.objects[i] != self.objects[j]:
+                    print(sum([n ** 2 for n in (self.objects[j].pos - self.objects[i].pos)]) ** 0.5)
+                    self.objects[j].pos = self.objects[i].pos
+                    self.objects[j].velocity = self.objects[i].velocity
+
     def interactions(self):
         """ N-body simulation """
 
@@ -54,9 +54,16 @@ class Engine:
         # (1/2) kick
         self.vel += self.acc * dt/2.0
 
+        self.time_pass += self.data.simulation_time
+
         for i, obj in enumerate(self.objects):
             obj.pos = self.pos[i]
             obj.velocity = self.vel[i]
+            obj.logger(self.time_pass)
+            if not self.time_pass % 864000:
+                self.data.logger(obj.name, obj.log)
+                obj.log = ""
+        self.dist_chek()
 
     def getAcc(self, pos, mass, softening):
         """
@@ -124,10 +131,11 @@ class MassObject:
         self.velocity = velocity
         self.pos = pos
         self.time = t
+        self.log = ""
 
-    def update(self):
-        # print(self.name, self.pos, self.velocity)
-        self.pos += self.velocity * self.time
+    def logger(self, t):
+        if not t % 86400:
+            self.log += f"Time (days): {t / 60 / 60 / 24}; pos (meters):{self.pos}; velocity (m/s): {self.velocity}\n"
 
 
 if __name__ == "__main__":

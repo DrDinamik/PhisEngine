@@ -1,16 +1,16 @@
 {
-  "groups": ["Interface_sprites", "celestial_body"],
+  "groups": ["interface_sprites", "celestial_body"],
   "types": {
     "button": {
       "img": ["data/UI/button/standard_img.png", "data/UI/button/standard_img.png"],
       "size": [20, 20],
-      "groups": ["Interface_sprites"]
+      "groups": ["interface_sprites"]
     }
   },
   "placements": [
-    {"name": "earth", "pos": [0, 0], "type": "button", "groups": ["celestial_body"]},
-    {"name": "sun", "pos": [0, 0], "type": "button", "groups": ["celestial_body"]},
-    {"name": "venus", "pos": [0, 0], "type": "button", "groups": ["celestial_body"]},
-    {"name": "mercury", "pos": [0, 0], "type": "button", "groups": ["celestial_body"]}
+    {"name": "Kerbol", "pos": [0, 0], "type": "button", "groups": ["celestial_body"], "images": ["data/UI/button/Kerbol.png"]},
+    {"name": "Kerbin", "pos": [0, 0], "type": "button", "groups": ["celestial_body"], "images": ["data/UI/button/Kerbin.png"]},
+    {"name": "Eve", "pos": [0, 0], "type": "button", "groups": ["celestial_body"], "images": ["data/UI/button/Eve.png"]},
+    {"name": "mariner_2", "pos": [0, 0], "type": "button", "groups": ["celestial_body"], "images": ["data/UI/button/space-capsule.png"]}
   ]
 }
